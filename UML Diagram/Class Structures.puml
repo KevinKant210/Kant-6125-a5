@@ -1,0 +1,72 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class InventoryApp
+
+
+class InventoryManager{
+   public HashMap itemHolder
+
+
+
+}
+
+class MenuController
+
+class InventoryItem{
+   private Double monetaryValue
+   private String serialNum
+   private String itemName
+
+   Public InventoryItem(Double monetaryValue,String serialNum, String itemName)
+
+   getItemName()
+   setItemName(String newName)
+
+   getSerialNum()
+   setSerialNum(String newSerial)
+
+   getMonetaryValue()
+   setMonetaryValue(String newValue)
+
+}
+
+ class FileManager{
+    private File filePath
+
+    FileManager(String filePath)
+    FileManager(File  filePath)
+
+
+    private boolean generateFile(String filePath)
+}
+
+class LoadFile{
+
+    LoadFile(String filePath)
+    LoadFile(File filePath)
+
+}
+
+class SaveFile{
+  private String fileName
+
+  SaveFile(String filePath,String fileName)
+  SaveFile(File filePath,String fileName)
+
+
+}
+
+
+javafx.Application <|-- InventoryApp
+LoadFile <|-- FileManager
+SaveFile <|-- FileManager
+
+InventoryApp --> MenuController
+
+MenuController->InventoryManager
+MenuController--> LoadFile
+MenuController-->SaveFile
+
+InventoryManager-InventoryItem
+@enduml
