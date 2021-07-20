@@ -26,7 +26,7 @@ public class InventoryApp extends Application {
 
         Stage stage = new Stage();
         Scene scene = new Scene(root);
-        stage.setTitle("Single Save");
+        stage.setTitle("Inventory Manager");
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.show();

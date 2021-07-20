@@ -7,17 +7,18 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="497.0" prefWidth="746.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.MenuController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="582.0" prefWidth="845.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ucf.assignments.MenuController">
    <children>
-      <HBox prefHeight="48.0" prefWidth="746.0">
+      <HBox prefHeight="48.0" prefWidth="845.0" style="-fx-background-color: white;">
          <children>
-            <MenuButton mnemonicParsing="false" prefHeight="30.0" prefWidth="40.0">
+            <MenuButton mnemonicParsing="false" prefHeight="30.0" prefWidth="40.0" stylesheets="@ButtonHover.css">
               <items>
                 <MenuItem fx:id="NewMenuButton" mnemonicParsing="false" onAction="#NewMenuButtonClicked" text="New" />
                 <MenuItem fx:id="SaveInventoryButton" mnemonicParsing="false" onAction="#SaveInventoryButtonClicked" text="Save" />
@@ -33,42 +34,21 @@
                      </image>
                   </ImageView>
                </graphic>
+               <tooltip>
+                  <Tooltip text="Manage Files" />
+               </tooltip>
             </MenuButton>
-            <Button fx:id="AddItemButton" mnemonicParsing="false" onAction="#AddItemButtonClicked" prefHeight="34.0" prefWidth="58.0">
-               <HBox.margin>
-                  <Insets left="20.0" top="5.0" />
-               </HBox.margin>
-               <graphic>
-                  <ImageView fitHeight="28.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/icons8-plus-50.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="DeleteItemButton" mnemonicParsing="false" onAction="#DeleteItemButtonClicked">
-               <HBox.margin>
-                  <Insets left="20.0" top="5.0" />
-               </HBox.margin>
-               <graphic>
-                  <ImageView fitHeight="30.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@Images/icons8-delete-50.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
             <TextField fx:id="SearchTextField" prefHeight="25.0" prefWidth="246.0" promptText="Search">
                <HBox.margin>
-                  <Insets left="150.0" top="10.0" />
+                  <Insets left="400.0" top="10.0" />
                </HBox.margin>
                <font>
                   <Font name="System Bold Italic" size="14.0" />
                </font>
             </TextField>
-            <Button fx:id="SearchButton" mnemonicParsing="false" onAction="#SearchButtonClicked" prefHeight="28.0" prefWidth="36.0">
+            <Button fx:id="SearchButton" mnemonicParsing="false" onAction="#SearchButtonClicked" prefHeight="28.0" prefWidth="36.0" stylesheets="@ButtonHover.css">
                <HBox.margin>
-                  <Insets left="15.0" top="5.0" />
+                  <Insets left="50.0" top="5.0" />
                </HBox.margin>
                <graphic>
                   <ImageView fitHeight="29.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
@@ -77,15 +57,67 @@
                      </image>
                   </ImageView>
                </graphic>
+               <tooltip>
+                  <Tooltip text="Search" />
+               </tooltip>
             </Button>
          </children>
       </HBox>
-      <TableView layoutY="48.0" prefHeight="451.0" prefWidth="746.0">
+      <TableView fx:id="InformationTable" layoutY="48.0" prefHeight="451.0" prefWidth="845.0">
         <columns>
-          <TableColumn fx:id="ItemCol" prefWidth="267.0" text="Item" />
-          <TableColumn fx:id="SerialNumberCol" prefWidth="288.0" text="Serial Number" />
-            <TableColumn fx:id="ValueCol" minWidth="0.0" prefWidth="145.0" text="Value" />
+          <TableColumn fx:id="ItemCol" prefWidth="331.0" text="Item" />
+          <TableColumn fx:id="SerialNumberCol" prefWidth="355.0" text="Serial Number" />
+            <TableColumn fx:id="ValueCol" minWidth="0.0" prefWidth="158.0" text="Value" />
         </columns>
       </TableView>
+      <HBox layoutY="499.0" prefHeight="88.0" prefWidth="845.0" style="-fx-background-color: white;">
+         <children>
+            <TextField fx:id="ItemNameTextField" alignment="CENTER" prefHeight="25.0" prefWidth="194.0" promptText="Item Name">
+               <HBox.margin>
+                  <Insets left="150.0" top="30.0" />
+               </HBox.margin>
+            </TextField>
+            <TextField fx:id="ItemSerialNumberTextField" alignment="CENTER" prefHeight="25.0" prefWidth="182.0" promptText="Serial Number">
+               <HBox.margin>
+                  <Insets left="25.0" top="30.0" />
+               </HBox.margin>
+            </TextField>
+            <TextField fx:id="ItemValueTextField" alignment="CENTER" prefHeight="25.0" prefWidth="183.0" promptText="Value (USD)">
+               <HBox.margin>
+                  <Insets left="25.0" top="30.0" />
+               </HBox.margin>
+            </TextField>
+            <Button fx:id="AddItemButton" mnemonicParsing="false" onAction="#AddItemButtonClicked" prefHeight="34.0" prefWidth="58.0" stylesheets="@ButtonHover.css">
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/icons8-plus-50.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Add Item" />
+               </tooltip>
+               <HBox.margin>
+                  <Insets left="25.0" top="25.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="DeleteItemButton" mnemonicParsing="false" onAction="#DeleteItemButtonClicked" stylesheets="@ButtonHover.css">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@Images/icons8-delete-50.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <tooltip>
+                  <Tooltip text="Delete Item" />
+               </tooltip>
+               <HBox.margin>
+                  <Insets left="15.0" top="25.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
    </children>
 </Pane>

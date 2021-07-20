@@ -1,0 +1,25 @@
+
+
+
+.button:active{
+    -fx-background-color: blue;
+}
+
+
+
+.button:hover{
+
+   -fx-background-color: #b8bbbb;
+}
+
+
+
+.button {
+
+
+    -fx-background-color: white;
+}
+
+
+
+

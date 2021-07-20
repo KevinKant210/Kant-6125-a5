@@ -3,15 +3,56 @@
 
 class InventoryApp
 
-
-class InventoryManager{
-   public HashMap itemHolder
+class ErrorWindowController
 
 
+
+
+class MenuController{
+        //FXML CONTENT//
+
+
+        public TableColumn ItemCol;
+
+        public TableColumn SerialNumberCol;
+
+        public TableColumn ValueCol;
+
+        public TableView InformationTable;
+
+        public Button SearchButton;
+
+        public TextField ItemNameTextField;
+
+        public TextField ItemSerialNumberTextField;
+
+        public TextField ItemValueTextField;
+
+        //BACKEND VARS//
+
+
+     HashMap<InventoryItem> ItemHolder
+
+
+
+     public void NewMenuButtonClicked(ActionEvent actionEvent)
+
+
+     public void SaveInventoryButtonClicked(ActionEvent actionEvent)
+
+
+     public void LoadInventoryButtonClicked(ActionEvent actionEvent)
+
+
+     public void AddItemButtonClicked(ActionEvent actionEvent)
+
+
+     public void DeleteItemButtonClicked(ActionEvent actionEvent)
+
+
+     public void SearchButtonClicked(ActionEvent actionEvent)
 
 }
-
-class MenuController
 
 class InventoryItem{
    private Double monetaryValue
@@ -38,7 +79,12 @@ class InventoryItem{
     FileManager(File  filePath)
 
 
-    private boolean generateFile(String filePath)
+    public writeFile(String toWrite)
+
+    public String readFile()
+
+    getFile()
+
 }
 
 class LoadFile{
@@ -46,13 +92,19 @@ class LoadFile{
     LoadFile(String filePath)
     LoadFile(File filePath)
 
+
+
+
+
 }
 
 class SaveFile{
-  private String fileName
+
 
   SaveFile(String filePath,String fileName)
   SaveFile(File filePath,String fileName)
+
+
 
 
 }
@@ -64,9 +116,9 @@ SaveFile <|-- FileManager
 
 InventoryApp --> MenuController
 
-MenuController->InventoryManager
+
 MenuController--> LoadFile
 MenuController-->SaveFile
 
-InventoryManager-InventoryItem
+MenuController-InventoryItem
 @enduml
