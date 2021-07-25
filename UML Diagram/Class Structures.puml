@@ -1,11 +1,19 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-class InventoryApp
+class InventoryApp{
+    public void start()
+}
 
-class ErrorWindowController
+class ErrorWindowController{
+    public static void generateError(String errorDescription)
+}
 
+class InventoryManager{
+    public ArrayList itemInventory
 
+    public ArrayList<InventoryItem> searchInventory(String searchQuery)
+}
 
 
 class MenuController{
@@ -33,7 +41,7 @@ class MenuController{
 
      HashMap<InventoryItem> ItemHolder
 
-
+    public void initialize()
 
      public void NewMenuButtonClicked(ActionEvent actionEvent)
 
@@ -51,6 +59,12 @@ class MenuController{
 
 
      public void SearchButtonClicked(ActionEvent actionEvent)
+
+     public void newItemName()
+
+     public void NewSerialNum()
+
+     public void NewValue()
 
 }
 
@@ -79,9 +93,7 @@ class InventoryItem{
     FileManager(File  filePath)
 
 
-    public writeFile(String toWrite)
 
-    public String readFile()
 
     getFile()
 
@@ -92,6 +104,16 @@ class LoadFile{
     LoadFile(String filePath)
     LoadFile(File filePath)
 
+
+    public InventoryManager loadInventory()
+
+    private ArrayList<InventoryItem> grabInventoryTSV()
+
+    private InventoryItem generateItemTSV(String line)
+
+    private ArrayList<InventoryItem> grabInventoryHTML()
+
+    private InventoryItem generateItemHTML(String[] itemContent)
 
 
 
@@ -104,9 +126,11 @@ class SaveFile{
   SaveFile(String filePath,String fileName)
   SaveFile(File filePath,String fileName)
 
+   public boolean saveFile(InventoryManager inventory)
 
+    private boolean saveHTML(ArrayList<InventoryItem> inventoryItems,FileWriter author)
 
-
+    private boolean saveTSV(ArrayList<InventoryItem> inventoryItems, FileWriter author)
 }
 
 
@@ -120,5 +144,7 @@ InventoryApp --> MenuController
 MenuController--> LoadFile
 MenuController-->SaveFile
 
-MenuController-InventoryItem
+MenuController-InventoryManager
+InventoryManager-InventoryItem
+
 @enduml

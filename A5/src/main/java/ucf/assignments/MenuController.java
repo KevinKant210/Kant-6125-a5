@@ -82,6 +82,8 @@ public class MenuController {
 
 
     public void NewMenuButtonClicked(ActionEvent actionEvent) {
+
+        //starts a new inventory manager but will delete the menu before hand
         Parent root = null;
         try {
             FXMLLoader loader  = new FXMLLoader(getClass().getResource("Menu.fxml"));
@@ -131,7 +133,7 @@ public class MenuController {
             ErrorWindowController.generateError("Please Choose a .txt file or .html file case matters! Stop trolling");
             return;
         }
-
+        //simply save file, overwrites are possible
         SaveFile fileSaver = new SaveFile(filePath);
 
         fileSaver.saveFile(inventoryManager);
@@ -152,12 +154,13 @@ public class MenuController {
         fileChooser.getExtensionFilters().add(txtFilter);
         fileChooser.getExtensionFilters().add(htmlFilter);
 
+        //load file into this menu
         File filePath = fileChooser.showOpenDialog(SearchButton.getScene().getWindow());
         if(filePath == null)return;
 
 
         inventoryManager = new LoadFile(filePath).loadInventory();
-
+        //fire this button as a quick way to display the new inventory
         ClearSearchButton.fire();
 
     }

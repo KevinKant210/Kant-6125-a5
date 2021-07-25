@@ -9,6 +9,7 @@ package ucf.assignments;
 
 import java.io.File;
 
+//class to serve as a template for load and save file classes
 public class FileManager {
     public File filePath;
 
