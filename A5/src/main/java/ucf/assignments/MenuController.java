@@ -1,9 +1,19 @@
+/*
+ *
+ *  *  UCF COP3330 Summer 2021 Assignment 5 Solution
+ *  *  Copyright 2021 Kevin Kant
+ *
+ */
+
 package ucf.assignments;
 
 
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -11,14 +21,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MenuController {
 
 
 
-    private final InventoryManager inventoryManager = new InventoryManager();
+    private InventoryManager inventoryManager = new InventoryManager();
 
 
 
@@ -41,6 +55,8 @@ public class MenuController {
     public TextField ItemValueTextField;
     @FXML
     public TextField SearchTextField;
+    @FXML
+    public Button ClearSearchButton;
 
 
 
@@ -48,7 +64,7 @@ public class MenuController {
 
             //set up columns and editable properties
 
-          ItemCol.setCellValueFactory(new PropertyValueFactory<InventoryItem,String>("itemName"));
+          ItemCol.setCellValueFactory(new PropertyValueFactory<>("itemName"));
           ItemCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
 
@@ -66,6 +82,30 @@ public class MenuController {
 
 
     public void NewMenuButtonClicked(ActionEvent actionEvent) {
+        Parent root = null;
+        try {
+            FXMLLoader loader  = new FXMLLoader(getClass().getResource("Menu.fxml"));
+            root = loader.load();
+
+
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setTitle("Inventory Manager");
+        stage.setScene(scene);
+
+        stage.show();
+
+        Stage currStage = (Stage) ClearSearchButton.getScene().getWindow();
+
+        currStage.close();
+
 
     }
 
@@ -85,6 +125,17 @@ public class MenuController {
 
         File filePath = fileChooser.showSaveDialog(SearchButton.getScene().getWindow());
 
+        if(filePath == null)return;
+        //ensure they choose a valid file
+        if(! (filePath.toString().endsWith(".html")) && ! (filePath.toString().endsWith(".txt"))){
+            ErrorWindowController.generateError("Please Choose a .txt file or .html file case matters! Stop trolling");
+            return;
+        }
+
+        SaveFile fileSaver = new SaveFile(filePath);
+
+        fileSaver.saveFile(inventoryManager);
+
 
     }
 
@@ -102,7 +153,12 @@ public class MenuController {
         fileChooser.getExtensionFilters().add(htmlFilter);
 
         File filePath = fileChooser.showOpenDialog(SearchButton.getScene().getWindow());
+        if(filePath == null)return;
 
+
+        inventoryManager = new LoadFile(filePath).loadInventory();
+
+        ClearSearchButton.fire();
 
     }
 
@@ -147,7 +203,7 @@ public class MenuController {
     public void DeleteItemButtonClicked(ActionEvent actionEvent) {
 
         //grab users item selection
-       InventoryItem item = (InventoryItem)  InformationTable.getSelectionModel().getSelectedItem();
+       InventoryItem item = InformationTable.getSelectionModel().getSelectedItem();
 
        //delete item
        InformationTable.getItems().remove(item);

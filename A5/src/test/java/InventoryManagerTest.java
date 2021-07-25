@@ -1,6 +1,13 @@
 
 
 
+/*
+ *
+ *  *  UCF COP3330 Summer 2021 Assignment 5 Solution
+ *  *  Copyright 2021 Kevin Kant
+ *
+ */
+
 import org.junit.jupiter.api.Test;
 import ucf.assignments.InventoryItem;
 import ucf.assignments.InventoryManager;
