@@ -78,11 +78,11 @@
             </Button>
          </children>
       </HBox>
-      <TableView fx:id="InformationTable" layoutY="48.0" prefHeight="451.0" prefWidth="845.0">
+      <TableView fx:id="InformationTable" editable="true" layoutY="48.0" prefHeight="451.0" prefWidth="845.0">
         <columns>
-          <TableColumn fx:id="ItemCol" prefWidth="331.0" text="Item" />
-          <TableColumn fx:id="SerialNumberCol" prefWidth="355.0" text="Serial Number" />
-            <TableColumn fx:id="ValueCol" minWidth="0.0" prefWidth="158.0" text="Value" />
+          <TableColumn fx:id="ItemCol" onEditCommit="#NewItemName" prefWidth="331.0" text="Item" />
+          <TableColumn fx:id="SerialNumberCol" onEditCommit="#NewSerialNum" prefWidth="355.0" text="Serial Number" />
+            <TableColumn fx:id="ValueCol" minWidth="0.0" onEditCommit="#NewValue"  prefWidth="158.0" text="Value" />
         </columns>
       </TableView>
       <HBox layoutY="499.0" prefHeight="88.0" prefWidth="845.0" style="-fx-background-color: white;">

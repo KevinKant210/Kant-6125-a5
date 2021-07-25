@@ -24,7 +24,7 @@ public class ErrorWindowController {
 
 
     public void OkButtonClicked(ActionEvent actionEvent) {
-
+        //function to close window when user says they understand error
         Stage stage = (Stage) OkButton.getScene().getWindow();
 
         stage.close();
@@ -33,10 +33,13 @@ public class ErrorWindowController {
     }
 
     public static void generateError(String errorMessage) {
+        //begin generating the error Window
         Parent root = null;
         try {
             FXMLLoader loader = new FXMLLoader (ErrorWindowController.class.getResource("ErrorWindow.fxml"));
             root = loader.load();
+
+            //set the error to the requested description
 
            ErrorWindowController controller =  loader.getController();
             controller.ErrorMessageText.setText(errorMessage);
@@ -45,7 +48,7 @@ public class ErrorWindowController {
             e.printStackTrace();
         }
 
-
+        //launc herror scene
         Stage stage = new Stage();
         Scene scene = new Scene(root);
         stage.setTitle("Error!");

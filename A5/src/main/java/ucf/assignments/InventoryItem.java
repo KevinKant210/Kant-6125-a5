@@ -2,6 +2,7 @@ package ucf.assignments;
 
 public class InventoryItem {
 
+
     private Double monetaryValue;
     private String serialNum;
     private String itemName;
@@ -15,7 +16,7 @@ public class InventoryItem {
     }
 
     public boolean setItemName(String newName){
-
+        //check user value for valid name
         if(newName.length() < 2 || newName.length() > 256){
             return false;
         }
@@ -25,7 +26,7 @@ public class InventoryItem {
         for(char c : name){
             if(!Character.isAlphabetic(c) && !Character.isWhitespace(c))return false;
         }
-
+        //set name
         itemName = newName;
 
         return true;
@@ -38,7 +39,7 @@ public class InventoryItem {
     }
 
     public boolean setSerialNum(String newSerial){
-
+        //check value for valid serial num
         if(newSerial.length() != 10)return false;
 
        char[] serial = newSerial.toCharArray();
@@ -46,29 +47,40 @@ public class InventoryItem {
        for(char c : serial){
            if(!Character.isLetterOrDigit(c)) return false;
        }
-
+        //set serial num
        serialNum = newSerial;
 
         return true;
     }
 
-    public Double getMonetaryValue(){
+    public String getMonetaryValue(){
+
+
+        return String.format("$%.2f",monetaryValue);
+    }
+
+    public Double getMonetaryValueAsDouble(){
         return monetaryValue;
     }
 
     public boolean setMonetaryValue(String newValue){
-
+        //check value for valid value
+        if(newValue.isEmpty() || newValue.isBlank()){
+            return false;
+        }
         Double val;
         try {
             val = Double.parseDouble(newValue);
         }catch(NumberFormatException e) {
             return false;
         }
-
+        //set value
         monetaryValue = val;
 
         return true;
     }
+
+
 
 
 

@@ -17,6 +17,7 @@ public class InventoryApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        //starts our application
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getResource("Menu.fxml"));

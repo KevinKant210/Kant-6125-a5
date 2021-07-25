@@ -1,6 +1,7 @@
 package ucf.assignments;
 
-import javafx.beans.property.SimpleStringProperty;
+
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -8,17 +9,16 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
-
 import java.io.File;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class MenuController {
 
 
 
-    private InventoryManager inventoryManager= new InventoryManager();
+    private final InventoryManager inventoryManager = new InventoryManager();
 
 
 
@@ -30,7 +30,7 @@ public class MenuController {
     @FXML
     public TableColumn<InventoryItem, String> ValueCol;
     @FXML
-    public TableView InformationTable;
+    public TableView<InventoryItem> InformationTable;
     @FXML
     public Button SearchButton;
     @FXML
@@ -46,13 +46,18 @@ public class MenuController {
 
     public void initialize(){
 
-
+            //set up columns and editable properties
 
           ItemCol.setCellValueFactory(new PropertyValueFactory<InventoryItem,String>("itemName"));
-          SerialNumberCol.setCellValueFactory(new PropertyValueFactory<>("serialNum"));
+          ItemCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
-        DecimalFormat currency = new DecimalFormat("$0.00");
-          //work on format for table
+
+          SerialNumberCol.setCellValueFactory(new PropertyValueFactory<>("serialNum"));
+          SerialNumberCol.setCellFactory(TextFieldTableCell.forTableColumn());
+
+
+          ValueCol.setCellValueFactory(new PropertyValueFactory<>("monetaryValue"));
+          ValueCol.setCellFactory(TextFieldTableCell.forTableColumn());
 
 
 
@@ -61,10 +66,15 @@ public class MenuController {
 
 
     public void NewMenuButtonClicked(ActionEvent actionEvent) {
+
     }
 
     public void SaveInventoryButtonClicked(ActionEvent actionEvent) {
 
+        //launch a file chooser with constraints on file type
+
+        //save users filename and path of choice
+        //create SaveFile Obj to save the file
         FileChooser fileChooser = new FileChooser();
 
         FileChooser.ExtensionFilter txtFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
@@ -79,6 +89,10 @@ public class MenuController {
     }
 
     public void LoadInventoryButtonClicked(ActionEvent actionEvent) {
+        //launch a file chooser with constraints on file type
+
+        //save users filename and path of choice
+        //create loadFile Obj to save the file
         FileChooser fileChooser = new FileChooser();
 
         FileChooser.ExtensionFilter txtFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
@@ -94,8 +108,10 @@ public class MenuController {
 
     public void AddItemButtonClicked(ActionEvent actionEvent) {
 
+        //generate a new item obj
         InventoryItem newItem = new InventoryItem();
 
+        //ensure all inputs are valid if not give an error to berade the user
         if(!newItem.setItemName(ItemNameTextField.getText())){
             ErrorWindowController.generateError("Please Enter a Valid Name Between 2-256 characters");
             return;
@@ -111,8 +127,18 @@ public class MenuController {
             return;
         }
 
-        inventoryManager.itemInventory.add(newItem);
+        if(!inventoryManager.searchInventory(newItem.getSerialNum()).isEmpty()){
+            for(InventoryItem i : inventoryManager.itemInventory){
+                if(i.getSerialNum().compareTo(newItem.getSerialNum()) == 0){
+                    ErrorWindowController.generateError("We already have this serial number in our system please choose another one");
+                    return;
+                }
+            }
+        }
 
+        //add item to the inventory
+        inventoryManager.itemInventory.add(newItem);
+        //display the item in the table
         InformationTable.getItems().add(newItem);
         InformationTable.refresh();
 
@@ -120,21 +146,30 @@ public class MenuController {
 
     public void DeleteItemButtonClicked(ActionEvent actionEvent) {
 
-
+        //grab users item selection
        InventoryItem item = (InventoryItem)  InformationTable.getSelectionModel().getSelectedItem();
+
+       //delete item
+       InformationTable.getItems().remove(item);
        inventoryManager.itemInventory.remove(item);
+
        InformationTable.refresh();
 
     }
 
     public void SearchButtonClicked(ActionEvent actionEvent) {
 
+        //call inventory manager search function
         ArrayList<InventoryItem> foundItems = inventoryManager.searchInventory(SearchTextField.getText());
+
+        //if item not found give error
         if(foundItems.isEmpty()){
             ErrorWindowController.generateError("Could Not Find Search Results Please Try Something Else");
+            SearchTextField.clear();
             return;
         }
 
+        //if item found clear table and display items
         InformationTable.getItems().clear();
         for(InventoryItem item : foundItems){
             InformationTable.getItems().add(item);
@@ -145,12 +180,82 @@ public class MenuController {
     }
 
     public void ClearSearchButtonClicked(ActionEvent actionEvent) {
+
+        //clear table
         InformationTable.getItems().clear();
 
+        //re add all items to display
         for(InventoryItem item : inventoryManager.itemInventory){
             InformationTable.getItems().add(item);
         }
 
         InformationTable.refresh();
     }
+
+    public void NewItemName(TableColumn.CellEditEvent<InventoryItem, String> inventoryItemStringCellEditEvent) {
+
+        //grab cell that user is trying to edit
+        InventoryItem item = InformationTable.getSelectionModel().getSelectedItem();
+
+        //ensure edit is valid if not give error
+        if(!item.setItemName(inventoryItemStringCellEditEvent.getNewValue())){
+            ErrorWindowController.generateError("Please Ensure Name is Properly Formatted");
+            InformationTable.refresh();
+            return;
+        }
+
+        InformationTable.refresh();
+
+    }
+
+    public void NewSerialNum(TableColumn.CellEditEvent<InventoryItem, String> inventoryItemStringCellEditEvent) {
+
+        //grab cell and item that user is trying to edit
+        InventoryItem item = InformationTable.getSelectionModel().getSelectedItem();
+
+        String newSerial = inventoryItemStringCellEditEvent.getNewValue();
+
+        //ensure user input is valid
+
+        if (!inventoryManager.searchInventory(newSerial).isEmpty()){
+            for(InventoryItem i : inventoryManager.itemInventory){
+                if(i.getSerialNum().compareTo(newSerial) == 0){
+                    ErrorWindowController.generateError("Please Enter a Unique Serial Number");
+                }
+            }
+        }
+
+        if(!item.setSerialNum(newSerial)){
+            ErrorWindowController.generateError("Please Enter a Valid Serial Number");
+            InformationTable.refresh();
+            return;
+        }
+
+        InformationTable.refresh();
+
+
+
+    }
+
+    public void NewValue(TableColumn.CellEditEvent<InventoryItem, String> inventoryItemStringCellEditEvent) {
+
+        //grab cell and item that user is trying to edit
+        InventoryItem item = InformationTable.getSelectionModel().getSelectedItem();
+
+        //ensure user input is valid
+
+        //quality of life for users who may have kept the dollar sign in on edit
+        String newVal = inventoryItemStringCellEditEvent.getNewValue().replace("$","");
+
+        if(!item.setMonetaryValue(newVal)){
+            ErrorWindowController.generateError("Please Enter a Valid Value");
+            InformationTable.refresh();
+            return;
+        }
+
+        InformationTable.refresh();
+    }
+
+
+
 }

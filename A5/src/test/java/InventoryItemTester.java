@@ -26,7 +26,7 @@ public class InventoryItemTester {
     @Test
     public void ensure_setname_catches_too_long_names(){
         InventoryItem item = new InventoryItem();
-        String string = new String();
+        String string = "";
 
         for(int i = 0 ; i < 300; i++){
           string = string.concat("a");
@@ -100,6 +100,26 @@ public class InventoryItemTester {
 
 
         assertTrue(item.setMonetaryValue("200.14"));
+    }
+
+    @Test
+    public void get_monetaryValue_returns_formatted_string(){
+        InventoryItem item = new InventoryItem();
+
+        item.setMonetaryValue("245.5666");
+
+        assertEquals("$245.57",item.getMonetaryValue());
+
+
+    }
+
+    @Test
+    public void set_monetary_value_rejects_blank_strings(){
+        InventoryItem item = new InventoryItem();
+
+
+
+        assertFalse(item.setMonetaryValue(""));
     }
 
 }
